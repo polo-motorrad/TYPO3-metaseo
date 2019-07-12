@@ -362,11 +362,12 @@ class MetatagPart extends AbstractPart
             $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'] = 1;
         }
 
-        $conf['parameter'] = $url;
+        $conf = array(
+            'parameter' => $url,
+            'forceAbsoluteUrl' => true
+        );
 
         $ret = $this->cObj->typoLink_URL($conf);
-        // maybe baseUrlWrap is better? but breaks with realurl currently?
-        $ret = GeneralUtility::fullUrl($ret);
 
         if ($disableMP === true) {
             // Restore old MP linking configuration
