@@ -367,14 +367,18 @@ class MetatagPart extends AbstractPart
             'forceAbsoluteUrl' => true
         );
 
-        $ret = $this->cObj->typoLink_URL($conf);
+        //always generate fullUrl from current TYPO3_SITE_SCRIPT (without query parameter), if not possible generate new frontend-URL for page
+        $fullUrl = strtok(GeneralUtility::fullUrl(FrontendUtility::getCurrentUrl()),'?');
+        if(!$fullUrl){
+            $fullUrl = $this->cObj->typoLink_URL($conf);
+        }
 
         if ($disableMP === true) {
             // Restore old MP linking configuration
             $GLOBALS['TSFE']->config['config']['MP_disableTypolinkClosestMPvalue'] = $mpOldConfValue;
         }
 
-        return $ret;
+        return $fullUrl;
     }
 
     /**
